@@ -1,0 +1,13 @@
+<app-user-create></app-user-create>
+<h2>My Users</h2>
+<ul class="users">
+  <li *ngFor="let user of users"
+      [class.selected]="user === selectedUser"
+      (click)="onSelect(user)">
+    {{user.name}} {{user.surname}} {{user.email}}
+
+  <button (click)="deleteUser(user.id)">delete</button>
+  </li>
+</ul>
+<app-user-detail [user]="selectedUser"></app-user-detail>
+

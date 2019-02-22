@@ -1,0 +1,20 @@
+<form (ngSubmit)="createUser()">
+  <p>
+    <label>name  <br>
+      <input type="text" [(ngModel)]="name" name="name">
+    </label>
+  </p>
+  <p>
+    <label>surname <br>
+      <input type="text" [(ngModel)]="surname" name="surname">
+    </label>
+  </p>
+  <p>
+    <label>email <br>
+      <input type="text" [(ngModel)]="email" name="email">
+    </label>
+  </p>
+  <input type="submit" value="Create User">
+</form>
+
+
