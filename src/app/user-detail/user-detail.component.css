@@ -1,0 +1,20 @@
+input.ng-touched.ng-invalid {
+  border:solid red 3px;
+}
+
+input.ng-touched.ng-valid {
+  border:solid green 3px;
+}
+
+input{
+  border-radius: 3px;
+  border:solid gray 3px;
+}
+
+.details_item{
+  margin-bottom: 15px;
+}
+
+.details{
+  text-align: center;
+}

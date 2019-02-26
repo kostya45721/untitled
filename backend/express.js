@@ -6,13 +6,9 @@ const client = new elasticsearch.Client({
   host: 'localhost:9200',
   log: 'trace'
 });
-const fs = require('fs');
 const bodyParser = require('body-parser');
 
-let users ; /*fs.readFile('mock-users.json', 'utf8' , function (err, data) {
-  if (err) throw err;
-  users = JSON.parse( data );
-});*/
+let users;
 
 app.use( (req, res, next) => {
   let origin = req.get('origin');
@@ -26,40 +22,33 @@ app.use( (req, res, next) => {
 app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
-  /*fs.readFile('mock-users.json', 'utf8' , function (err, data) {
-    if (err) throw err;
-    users = JSON.parse( data );
-    res.send(users);
-  });*/
   let readData = async () => {
     try {
       const response = await client.search({});
       users = response.hits.hits;
-      console.log(response.hits.hits)
+      res.send(users);
     } catch (error) {
       console.trace(error.message)
     }
   };
   readData();
-  res.send(users);
 });
 
 app.delete('/delete_user/:id', function (req, res) {
-
-
-  /*for(let i = 0; i < users.length; i++)
-  {
-    if(users[i].id === +req.params.id)
-    {
-      users.splice(i, 1);
-      let newUsers = JSON.stringify(users);
-      fs.writeFile('mock-users.json', newUsers, function (err) {
-        if (err) throw err;
+  let readData = async () => {
+    try {
+      const response = await client.delete({
+        index: 'datauser',
+        type: 'user',
+        id: req.params.id,
+        refresh: true
       });
-      break;
+      res.send(response);
+    } catch (error) {
+      console.trace(error.message)
     }
-  }
-  res.send(users);*/
+  };
+  readData();
 });
 
 app.post('/create', function (req, res) {
@@ -70,45 +59,54 @@ app.post('/create', function (req, res) {
         const response = await client.index({
           index: 'datauser',
           type: 'user',
+          refresh: true,
           body: {
             name: req.body.name,
             surname: req.body.surname,
-            email: req.body.email
+            email: req.body.email,
+            phonenumber: req.body.phonenumber,
+            dateOfBirth: Date.parse(req.body.dateOfBirth),
+            dateOfAdded: req.body.dateOfAdded,
+            dateOfChanged: req.body.dateOfChanged
           }
         });
+        res.send(response._id);
       } catch (error) {
         console.trace(error.message)
       }
     };
 
     readData();
-    res.send();
   }
-
-  /*users.push(req.body);
-  let newUsers = JSON.stringify(users);
-  fs.writeFile('mock-users.json', newUsers, function (err) {
-    if (err) throw err;
-  });
-  res.send("Ok");*/
 });
 
-app.post('/change_user/:id', function (req,res) {
+app.put('/change_user/:id', function (req,res) {
 
-  for (let i = 0; i < users.length; i++)
-  {
-    if(users[i].id === +req.params.id)
-    {
-      users.splice(i, 1, req.body);
-      let newUsers = JSON.stringify(users);
-      fs.writeFile('mock-users.json', newUsers, function (err) {
-        if (err) throw err;
+  let readData = async () => {
+    try {
+      const response = await client.update({
+        index: 'datauser',
+        type: 'user',
+        id: req.params.id,
+        refresh: true,
+        body: {
+          doc:  {
+            name: req.body.name,
+            surname: req.body.surname,
+            email: req.body.email,
+            phonenumber: req.body.phonenumber,
+            dateOfBirth: Date.parse(req.body.dateOfBirth),
+            dateOfAdded: req.body.dateOfAdded,
+            dateOfChanged: req.body.dateOfChanged
+          }
+        }
       });
-      break;
+      res.send(response._id);
+    } catch (error) {
+      console.trace(error.message)
     }
-  }
-
-  res.send("User Change");
-})
+  };
+  readData();
+});
 
 app.listen(port);

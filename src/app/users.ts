@@ -3,4 +3,8 @@ export class User {
   name: string;
   surname: string;
   email: string;
+  phonenumber: number;
+  dateOfBirth: string;
+  dateOfAdded: string;
+  dateOfChanged: string;
 }

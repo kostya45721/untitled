@@ -19,11 +19,10 @@ export class UserService {
   }
 
   getUsers() {
-    // this.messageService.add('UserService: fetched users')
     return this.http.get('http://localhost:3300');
   }
 
   changeUser(oldId: number, newUser: User) {
-    return this.http.post('http://localhost:3300/change_user/' + oldId, newUser, {responseType: 'text'});
+    return this.http.put('http://localhost:3300/change_user/' + oldId, newUser, {responseType: 'text'});
   }
 }

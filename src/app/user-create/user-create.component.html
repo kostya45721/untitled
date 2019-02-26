@@ -1,20 +1,30 @@
-<form (ngSubmit)="createUser()">
+<form #createUserForm="ngForm" (ngSubmit)="createUser(createUserForm)">
   <p>
     <label>name  <br>
-      <input type="text" [(ngModel)]="name" name="name">
+      <input type="text" [(ngModel)]="name" name="name" #nameModel="ngModel" required>
     </label>
   </p>
   <p>
     <label>surname <br>
-      <input type="text" [(ngModel)]="surname" name="surname">
+      <input type="text" [(ngModel)]="surname" name="surname" #surnameModel="ngModel" required>
     </label>
   </p>
   <p>
     <label>email <br>
-      <input type="text" [(ngModel)]="email" name="email">
+      <input type="email" [(ngModel)]="email" name="email" #emailModel="ngModel" required pattern="[a-zA-Z_]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}">
     </label>
   </p>
-  <input type="submit" value="Create User">
+  <p>
+    <label>phone number <br>
+      <input [(ngModel)]="phonenumber" name="phonenumber" #phoneModel="ngModel" required pattern="[0-9]{10}">
+    </label>
+  </p>
+  <p>
+    <label>date of birth <br>
+      <input type="date" [(ngModel)]="dateOfBirth" max="{{maxdate}}" name="date" #dateModel="ngModel" required>
+    </label>
+  </p>
+  <input type="submit" value="Create User" [disabled]="nameModel.invalid || surnameModel.invalid || emailModel.invalid || phoneModel.invalid || dateModel.invalid" >
 </form>
 
 

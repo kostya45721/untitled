@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
 import { User } from '../users';
 import { UserService } from '../user.service';
 import { UsersComponent } from '../users/users.component';
@@ -11,26 +13,35 @@ import { UsersComponent } from '../users/users.component';
 export class UserDetailComponent implements OnInit {
   @Input() user: User;
   newUser: User;
-  name: string;
-  surname: string;
-  email: string;
+  maxdate: any;
 
   constructor(private userService: UserService,
-              private  userComponent: UsersComponent) { }
+              private  userComponent: UsersComponent) {
+    this.maxdate = new Date().toISOString().substr(0, 10);
+  }
 
   ngOnInit() {
   }
 
-  changeUser() {
+  changeUser(form: NgForm) {
     this.newUser = {
       id: this.user.id,
-      name: this.name,
-      surname: this.surname,
-      email: this.email
+      name: form.value.name,
+      surname: form.value.surname,
+      email: form.value.email,
+      phonenumber: +form.value.phonenumber,
+      dateOfBirth: String(form.value.dateOfBirth),
+      dateOfAdded: this.user.dateOfAdded,
+      dateOfChanged: new Date().toDateString()
     };
+
+
     this.userService.changeUser( this.user.id, this.newUser)
-      .subscribe((massage: any) => {
+      .subscribe(() => {
         this.userComponent.getUsers();
+        form.reset();
       });
+
+    console.log(this.userComponent.users);
   }
 }
