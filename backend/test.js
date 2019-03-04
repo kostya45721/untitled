@@ -28,9 +28,9 @@ describe("express and elasticsearch test",function () {
       .post('/user')
       .send(newUser)
       .then( res => {
-        userId = res.body._id;
-        assert.equal('created', res.body.result);
         assert.equal(200, res.status);
+        assert.equal('created', res.body.result);
+        userId = res.body._id;
         done();
     })
   });
