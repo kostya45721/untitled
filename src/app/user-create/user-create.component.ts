@@ -40,7 +40,7 @@ export class UserCreateComponent implements OnInit {
     };
     this.userService.createUser( this.user )
       .subscribe(() => {
-        this.userComponent.getUsers();
+        this.userComponent.updateUsers();
         form.resetForm();
       });
     console.log(this.userComponent.users);

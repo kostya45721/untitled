@@ -35,7 +35,7 @@ export class UserDetailComponent implements OnInit {
     };
     this.userService.changeUser( user.id, this.newUser)
       .subscribe(() => {
-        this.userComponent.getUsers();
+        this.userComponent.updateUsers();
         form.resetForm();
       });
     console.log(this.userComponent.users);

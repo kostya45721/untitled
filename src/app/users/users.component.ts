@@ -18,14 +18,14 @@ export class UsersComponent implements  OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.getUsers();
+    this.updateUsers();
   }
 
   onSelect(user: User, form: NgForm): void {
     form.resetForm();
   }
 
-  getUsers() {
+  updateUsers() {
     this.userService.getUsers()
       .subscribe((users: any) => {
         let allUsers = [];
@@ -49,12 +49,8 @@ export class UsersComponent implements  OnInit {
   deleteUser(id: number, form: NgForm) {
     this.userService.deleteUser(id)
       .subscribe( () => {
-       for (let item of this.users) {
-         if (item.id === id) {
-           this.getUsers();
-           form.resetForm();
-         }
-       }
+         this.updateUsers();
+         form.resetForm();
       });
 
     console.log(this.users);

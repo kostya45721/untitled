@@ -7,6 +7,7 @@ const client = new elasticsearch.Client({
   log: 'trace'
 });
 const bodyParser = require('body-parser');
+const assert = require('assert');
 
 let users;
 
@@ -33,6 +34,23 @@ app.get('/users', function (req, res) {
   };
   readData();
 });
+
+app.get('/user/:id', function (req, res) {
+  let readData = async () => {
+    try {
+      const response = await client.get({
+        index: 'datauser',
+        type: 'user',
+        id: req.params.id,
+      });
+      users = response;
+      res.send(users);
+    } catch (error) {
+      res.sendStatus(404);
+    }
+  };
+  readData();
+})
 
 app.delete('/user/:id', function (req, res) {
   let readData = async () => {
@@ -70,7 +88,7 @@ app.post('/user', function (req, res) {
             dateOfChanged: req.body.dateOfChanged
           }
         });
-        res.send(response._id);
+        res.send(response);
       } catch (error) {
         console.trace(error.message)
       }
@@ -81,7 +99,6 @@ app.post('/user', function (req, res) {
 });
 
 app.put('/user/:id', function (req,res) {
-
   let readData = async () => {
     try {
       const response = await client.update({
@@ -101,7 +118,7 @@ app.put('/user/:id', function (req,res) {
           }
         }
       });
-      res.send(response._id);
+      res.send(response);
     } catch (error) {
       console.trace(error.message)
     }
@@ -110,3 +127,6 @@ app.put('/user/:id', function (req,res) {
 });
 
 app.listen(port);
+
+
+module.exports.app = app;
