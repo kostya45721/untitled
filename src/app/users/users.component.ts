@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { User } from '../users';
 import {UserService} from '../user.service';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-users',
@@ -13,38 +14,31 @@ export class UsersComponent implements  OnInit {
 
   user: User;
   users: User[];
-  selectedUser: User;
-  selectedFlag: boolean;
 
-  constructor(private userService: UserService) { this.selectedFlag = false; }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
     this.getUsers();
   }
 
-  onSelect(user: User): void {
-    if (!this.selectedFlag) {
-      this.selectedUser = user;
-      this.selectedFlag = !this.selectedFlag;
-    }
-    else if (this.selectedUser !== user) { this.selectedUser = user; }
-    else { this.selectedUser = null; }
+  onSelect(user: User, form: NgForm): void {
+    form.resetForm();
   }
 
   getUsers() {
     this.userService.getUsers()
       .subscribe((users: any) => {
-        const allUsers = [];
-        for (let i = 0; i < users.length; i++) {
+        let allUsers = [];
+        for (let item of users) {
           allUsers.push( {
-            id: users[i]._id,
-            name: users[i]._source.name,
-            surname: users[i]._source.surname,
-            email: users[i]._source.email,
-            phonenumber: users[i]._source.phonenumber,
-            dateOfBirth: users[i]._source.dateOfChanged,
-            dateOfAdded: users[i]._source.dateOfAdded,
-            dateOfChanged: users[i]._source.dateOfChanged
+            id: item._id,
+            name: item._source.name,
+            surname: item._source.surname,
+            email: item._source.email,
+            phonenumber: item._source.phonenumber,
+            dateOfBirth: item._source.dateOfBirth,
+            dateOfAdded: item._source.dateOfAdded,
+            dateOfChanged: item._source.dateOfChanged
           } );
         }
         this.users = allUsers;
@@ -52,13 +46,13 @@ export class UsersComponent implements  OnInit {
       });
   }
 
-  deleteUser(id: number) {
+  deleteUser(id: number, form: NgForm) {
     this.userService.deleteUser(id)
       .subscribe( () => {
-       for (let i = 0; i < this.users.length; i++) {
-         if (this.users[i].id === id) {
+       for (let item of this.users) {
+         if (item.id === id) {
            this.getUsers();
-           this.selectedUser = null;
+           form.resetForm();
          }
        }
       });

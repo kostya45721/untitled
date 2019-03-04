@@ -1,20 +1,22 @@
-input.ng-touched.ng-invalid {
-  border:solid red 3px;
+.mat-form-field{
+  margin-left: 35px;
 }
 
-input.ng-touched.ng-valid {
-  border:solid green 3px;
+.mat-expansion-panel{
+  background-color: gray;
+  margin-top: 20px;
 }
 
-input{
-  border-radius: 3px;
-  border:solid gray 3px;
+button:hover{
+  background-color: #a9a9a7;
+  transition: 0.5s;
 }
 
-.details_item{
-  margin-bottom: 15px;
+.mat-raised-button{
+  height: 20px;
+  line-height: 10px;
 }
 
-.details{
-  text-align: center;
+button{
+  margin-left: 40px;
 }

@@ -1,30 +1,29 @@
-<form #createUserForm="ngForm" (ngSubmit)="createUser(createUserForm)">
-  <p>
-    <label>name  <br>
-      <input type="text" [(ngModel)]="name" name="name" #nameModel="ngModel" required>
-    </label>
-  </p>
-  <p>
-    <label>surname <br>
-      <input type="text" [(ngModel)]="surname" name="surname" #surnameModel="ngModel" required>
-    </label>
-  </p>
-  <p>
-    <label>email <br>
-      <input type="email" [(ngModel)]="email" name="email" #emailModel="ngModel" required pattern="[a-zA-Z_]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}">
-    </label>
-  </p>
-  <p>
-    <label>phone number <br>
-      <input [(ngModel)]="phonenumber" name="phonenumber" #phoneModel="ngModel" required pattern="[0-9]{10}">
-    </label>
-  </p>
-  <p>
-    <label>date of birth <br>
-      <input type="date" [(ngModel)]="dateOfBirth" max="{{maxdate}}" name="date" #dateModel="ngModel" required>
-    </label>
-  </p>
-  <input type="submit" value="Create User" [disabled]="nameModel.invalid || surnameModel.invalid || emailModel.invalid || phoneModel.invalid || dateModel.invalid" >
+<form #createUserForm="ngForm" class="example-container">
+  <mat-form-field>
+    <input matInput placeholder="Name" [(ngModel)]="createUserForm.value.name" minlength="4" name="name" #nameModel="ngModel" required autocomplete="off">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="surname" [(ngModel)]="createUserForm.value.surname" minlength="4" name="surname" #surnameModel="ngModel" required autocomplete="off">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="email" [(ngModel)]="createUserForm.value.email" name="email" #emailModel="ngModel" required email pattern="[a-zA-Z_0-9]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}" autocomplete="off">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <span matPrefix>+ &nbsp;</span>
+    <input type="tel" matInput placeholder="Telephone" [(ngModel)]="createUserForm.value.phonenumber" name="phonenumber" #phoneModel="ngModel" required  pattern="[0-9]{10}" autocomplete="off">
+    <mat-icon matSuffix>mode_edit</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput max="{{maxdate}}" name="dateOfBirth" ngModel="createUserForm.value.dateOfBirth" #dateModel="ngModel" [matDatepicker]="picker" placeholder="Choose a date" autocomplete="off">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="createUser(createUserForm)" [disabled]="nameModel.invalid || surnameModel.invalid || emailModel.invalid || phoneModel.invalid || dateModel.invalid">Create user</button>
 </form>
 
 

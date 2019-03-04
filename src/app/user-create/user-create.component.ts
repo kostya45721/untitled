@@ -10,17 +10,19 @@ import { UsersComponent } from '../users/users.component';
   templateUrl: './user-create.component.html',
   styleUrls: ['./user-create.component.css']
 })
-export class UserCreateComponent implements OnInit {
 
-  users: User[];
-  user: User;
-  maxdate: any;
+export class UserCreateComponent implements OnInit {
 
   constructor(private userService: UserService,
               private  userComponent: UsersComponent
               ) {
     this.maxdate = new Date().toISOString().substr(0, 10);
   }
+
+  users: User[];
+  user: User;
+  maxdate: any;
+  email: any;
 
   ngOnInit() {
   }
@@ -31,15 +33,15 @@ export class UserCreateComponent implements OnInit {
       name: form.value.name,
       surname: form.value.surname,
       email: form.value.email,
-      phonenumber: +form.value.phonenumber,
-      dateOfBirth: form.value.dateOfBirth,
+      phonenumber: form.value.phonenumber,
+      dateOfBirth: form.value.dateOfBirth.toDateString(),
       dateOfAdded: new Date().toDateString(),
       dateOfChanged: new Date().toDateString()
     };
-    this.userService.addUser( this.user )
+    this.userService.createUser( this.user )
       .subscribe(() => {
         this.userComponent.getUsers();
-        form.reset();
+        form.resetForm();
       });
     console.log(this.userComponent.users);
   }

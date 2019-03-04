@@ -1,33 +1,43 @@
-<div class="details" *ngIf="user">
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let user of userComponent.users" >
+    <mat-expansion-panel-header  (click)="userComponent.onSelect(user, changeUserForm)">
+      <mat-panel-title>
+        {{user.name}} {{user.surname}}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{user.email}}
+        <button mat-raised-button color="primary" (click)="userComponent.deleteUser(user.id, changeUserForm)">Delete user</button>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div>
+        <label>Name: {{user.name}} Surname: {{user.surname}} Email: {{user.email}} Phone number: {{user.phonenumber}} Date of Birth: {{user.dateOfBirth}}
+          Date of added: {{user.dateOfAdded}}  Date of changed: {{user.dateOfChanged}}</label>
+    </div>
+    <form  #changeUserForm="ngForm">
+      <div>
+      <mat-form-field>
+        <input matInput [(ngModel)]="name" name="name" placeholder="Name" minlength="4" #nameModel="ngModel" required autocomplete="off">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [(ngModel)]="surname" name="surname" placeholder="Surname" minlength="4" #surnameModel="ngModel" required autocomplete="off">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="email" [(ngModel)]="email" name="email" placeholder="Email" minlength="4" #emailModel="ngModel" required email pattern="[a-zA-Z_0-9]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}" autocomplete="off">
+      </mat-form-field>
+      <mat-form-field>
+        <span matPrefix>+ &nbsp;</span>
+        <input type="tel" matInput placeholder="Telephone" [(ngModel)]="changeUserForm.value.phonenumber" name="phonenumber" #phoneModel="ngModel" required  pattern="[0-9]{10}" autocomplete="off">
+        <mat-icon matSuffix>mode_edit</mat-icon>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput max="{{maxdate}}" name="dateOfBirth" ngModel="changeUserForm.value.dateOfBirth" #dateModel="ngModel" [matDatepicker]="picker" placeholder="Choose a date" required autocomplete="off">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <button mat-raised-button (click)="changeUser(user, changeUserForm)" color="primary"
+              [disabled]="nameModel.invalid || surnameModel.invalid || emailModel.invalid || phoneModel.invalid || dateModel.invalid">Change user</button>
+      </div>
+    </form>
+  </mat-expansion-panel>
+</mat-accordion>
 
-  <h2>{{user.name}} {{user.surname}} details:</h2>
-  <form  #changeUserForm="ngForm" (ngSubmit)="changeUser(changeUserForm)">
-    <div class="details_item">
-      <label>name:
-        <input [(ngModel)]="name" name="name" placeholder="{{user.name}}" #nameModel="ngModel" required/>
-      </label>
-      <label>surname:
-        <input [(ngModel)]="surname" name="surname" placeholder="{{user.surname}}" #surnameModel="ngModel" required/>
-      </label>
-    </div>
-    <div class="details_item">
-      <label>email:
-      <input type="email" [(ngModel)]="email" name="email" placeholder="{{user.email}}" #emailModel="ngModel" required pattern="[a-zA-Z_]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}"/>
-      </label>
-      <label>phone number:
-        <input [(ngModel)]="phonenumber" name="phonenumber" placeholder="{{user.phonenumber}}" #phoneModel="ngModel" required pattern="[0-9]{10}"/>
-      </label>
-    </div>
-    <div  class="details_item">
-      <label>date of birth:
-        <input type="date" [(ngModel)]="dateOfBirth" name="dateOfBirth" max="{{maxdate}}" placeholder="{{user.dateOfBirth}}" #dateModel="ngModel" required />
-      </label>
-    </div>
-    <div class="details_item">
-      <label>date of added: </label> {{user.dateOfAdded}} <br> <br>
-      <label>date of changed: </label> {{user.dateOfChanged}}
-    </div>
-    <input type="submit" value="Change" [disabled]="nameModel.invalid || surnameModel.invalid || emailModel.invalid || phoneModel.invalid || dateModel.invalid">
-  </form>
-
-</div>

@@ -21,10 +21,10 @@ app.use( (req, res, next) => {
 });
 app.use(bodyParser.json());
 
-app.get('/', function (req, res) {
+app.get('/users', function (req, res) {
   let readData = async () => {
     try {
-      const response = await client.search({});
+      const response = await client.search({ size: '20' });
       users = response.hits.hits;
       res.send(users);
     } catch (error) {
@@ -34,7 +34,7 @@ app.get('/', function (req, res) {
   readData();
 });
 
-app.delete('/delete_user/:id', function (req, res) {
+app.delete('/user/:id', function (req, res) {
   let readData = async () => {
     try {
       const response = await client.delete({
@@ -51,7 +51,7 @@ app.delete('/delete_user/:id', function (req, res) {
   readData();
 });
 
-app.post('/create', function (req, res) {
+app.post('/user', function (req, res) {
   if(!req.body) return res.sendStatus(400);
   else {
     readData = async () => {
@@ -65,7 +65,7 @@ app.post('/create', function (req, res) {
             surname: req.body.surname,
             email: req.body.email,
             phonenumber: req.body.phonenumber,
-            dateOfBirth: Date.parse(req.body.dateOfBirth),
+            dateOfBirth: req.body.dateOfBirth,
             dateOfAdded: req.body.dateOfAdded,
             dateOfChanged: req.body.dateOfChanged
           }
@@ -80,7 +80,7 @@ app.post('/create', function (req, res) {
   }
 });
 
-app.put('/change_user/:id', function (req,res) {
+app.put('/user/:id', function (req,res) {
 
   let readData = async () => {
     try {
@@ -95,7 +95,7 @@ app.put('/change_user/:id', function (req,res) {
             surname: req.body.surname,
             email: req.body.email,
             phonenumber: req.body.phonenumber,
-            dateOfBirth: Date.parse(req.body.dateOfBirth),
+            dateOfBirth: req.body.dateOfBirth,
             dateOfAdded: req.body.dateOfAdded,
             dateOfChanged: req.body.dateOfChanged
           }

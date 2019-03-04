@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { User } from '../users';
@@ -11,7 +11,6 @@ import { UsersComponent } from '../users/users.component';
   styleUrls: ['./user-detail.component.css']
 })
 export class UserDetailComponent implements OnInit {
-  @Input() user: User;
   newUser: User;
   maxdate: any;
 
@@ -23,25 +22,22 @@ export class UserDetailComponent implements OnInit {
   ngOnInit() {
   }
 
-  changeUser(form: NgForm) {
+  changeUser(user: User, form: NgForm) {
     this.newUser = {
-      id: this.user.id,
+      id: user.id,
       name: form.value.name,
       surname: form.value.surname,
       email: form.value.email,
-      phonenumber: +form.value.phonenumber,
-      dateOfBirth: String(form.value.dateOfBirth),
-      dateOfAdded: this.user.dateOfAdded,
+      phonenumber: form.value.phonenumber,
+      dateOfBirth: form.value.dateOfBirth.toDateString(),
+      dateOfAdded: user.dateOfAdded,
       dateOfChanged: new Date().toDateString()
     };
-
-
-    this.userService.changeUser( this.user.id, this.newUser)
+    this.userService.changeUser( user.id, this.newUser)
       .subscribe(() => {
         this.userComponent.getUsers();
-        form.reset();
+        form.resetForm();
       });
-
     console.log(this.userComponent.users);
   }
 }
