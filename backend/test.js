@@ -30,6 +30,7 @@ describe("express and elasticsearch test",function () {
       .then( res => {
         assert.equal(200, res.status);
         assert.equal('created', res.body.result);
+        assert.isNotEmpty(res.body);
         userId = res.body._id;
         done();
     })

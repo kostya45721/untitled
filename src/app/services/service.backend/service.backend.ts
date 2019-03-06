@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
 
 import {HttpClient} from '@angular/common/http';
-import {User} from './users';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class ServiceBackend {
 
   constructor( private http: HttpClient) { }
 
@@ -14,7 +13,7 @@ export class UserService {
     return this.http.delete('http://localhost:3300/user/' + id, {responseType: 'text'});
   }
 
-  createUser(user: User) {
+  createUser(user: object) {
     return this.http.post('http://localhost:3300/user', user, {responseType: 'text'});
   }
 
@@ -22,7 +21,7 @@ export class UserService {
     return this.http.get('http://localhost:3300/users');
   }
 
-  changeUser(oldId: number, newUser: User) {
+  changeUser(oldId: number, newUser: object) {
     return this.http.put('http://localhost:3300/user/' + oldId, newUser, {responseType: 'text'});
   }
 }

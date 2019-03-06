@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { User } from '../users';
-import {UserService} from '../user.service';
 import {NgForm} from '@angular/forms';
+import {ServiceBackend} from '../services/service.backend/service.backend';
+import {UpdateUserService} from '../services/service.update.user/update.user.service';
 
 @Component({
   selector: 'app-users',
@@ -11,49 +11,46 @@ import {NgForm} from '@angular/forms';
 })
 
 export class UsersComponent implements  OnInit {
+  maxdate: any;
+  user: object;
 
-  user: User;
-  users: User[];
-
-  constructor(private userService: UserService) { }
-
-  ngOnInit() {
-    this.updateUsers();
+  constructor( private backendService: ServiceBackend,
+               private updateUserService: UpdateUserService) {
+    this.maxdate = new Date().toISOString().substr(0, 10);
   }
 
-  onSelect(user: User, form: NgForm): void {
+  ngOnInit() {
+    this.updateUserService.updateUsers();
+  }
+
+  changeUser(user: any, form: NgForm) {
+    this.user = {
+      id: user.id,
+      name: form.value.name,
+      surname: form.value.surname,
+      email: form.value.email,
+      phonenumber: form.value.phonenumber,
+      dateOfBirth: form.value.dateOfBirth.toDateString(),
+      dateOfAdded: user.dateOfAdded,
+      dateOfChanged: new Date().toDateString()
+    };
+    this.backendService.changeUser( user.id, this.user)
+      .subscribe(() => {
+        this.updateUserService.updateUsers();
+      });
     form.resetForm();
   }
 
-  updateUsers() {
-    this.userService.getUsers()
-      .subscribe((users: any) => {
-        let allUsers = [];
-        for (let item of users) {
-          allUsers.push( {
-            id: item._id,
-            name: item._source.name,
-            surname: item._source.surname,
-            email: item._source.email,
-            phonenumber: item._source.phonenumber,
-            dateOfBirth: item._source.dateOfBirth,
-            dateOfAdded: item._source.dateOfAdded,
-            dateOfChanged: item._source.dateOfChanged
-          } );
-        }
-        this.users = allUsers;
-        console.log(this.users);
+  deleteUser(id: number, form: NgForm) {
+    this.backendService.deleteUser(id)
+      .subscribe( () => {
+        this.updateUserService.updateUsers();
       });
+    form.resetForm();
   }
 
-  deleteUser(id: number, form: NgForm) {
-    this.userService.deleteUser(id)
-      .subscribe( () => {
-         this.updateUsers();
-         form.resetForm();
-      });
-
-    console.log(this.users);
+  onSelect(form: NgForm): void {
+    form.resetForm();
   }
 }
 

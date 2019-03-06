@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { User } from '../users';
-import { UserService } from '../user.service';
-import { UsersComponent } from '../users/users.component';
+import {ServiceBackend} from '../services/service.backend/service.backend';
+import {UpdateUserService} from '../services/service.update.user/update.user.service';
 
 @Component({
   selector: 'app-user-create',
@@ -12,24 +11,19 @@ import { UsersComponent } from '../users/users.component';
 })
 
 export class UserCreateComponent implements OnInit {
+  maxdate: any;
+  user: object;
 
-  constructor(private userService: UserService,
-              private  userComponent: UsersComponent
-              ) {
+  constructor( public backendService: ServiceBackend,
+               private updateUserService: UpdateUserService) {
     this.maxdate = new Date().toISOString().substr(0, 10);
   }
-
-  users: User[];
-  user: User;
-  maxdate: any;
-  email: any;
 
   ngOnInit() {
   }
 
   createUser(form: NgForm) {
-    this.user = {
-      id: 1,
+     this.user = {
       name: form.value.name,
       surname: form.value.surname,
       email: form.value.email,
@@ -38,11 +32,11 @@ export class UserCreateComponent implements OnInit {
       dateOfAdded: new Date().toDateString(),
       dateOfChanged: new Date().toDateString()
     };
-    this.userService.createUser( this.user )
-      .subscribe(() => {
-        this.userComponent.updateUsers();
-        form.resetForm();
+     this.backendService.createUser( this.user )
+      .subscribe((user) => {
+        this.updateUserService.updateUsers();
+        return user;
       });
-    console.log(this.userComponent.users);
+     form.resetForm();
   }
 }

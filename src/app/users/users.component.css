@@ -4,3 +4,25 @@
   padding: 0;
   width: 15em;
 }
+.mat-form-field{
+  margin-left: 35px;
+}
+
+.mat-expansion-panel{
+  background-color: gray;
+  margin-top: 20px;
+}
+
+button:hover{
+  background-color: #a9a9a7;
+  transition: 0.5s;
+}
+
+.mat-raised-button{
+  height: 20px;
+  line-height: 10px;
+}
+
+button{
+  margin-left: 40px;
+}
