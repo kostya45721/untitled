@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 import {NgForm} from '@angular/forms';
-import {ServiceBackend} from '../services/service.backend/service.backend';
+import {BackendService} from '../services/service.backend/backend.service';
 import {UpdateUserService} from '../services/service.update.user/update.user.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class UsersComponent implements  OnInit {
   maxdate: any;
   user: object;
 
-  constructor( private backendService: ServiceBackend,
+  constructor( private backendService: BackendService,
                private updateUserService: UpdateUserService) {
     this.maxdate = new Date().toISOString().substr(0, 10);
   }
@@ -41,12 +41,11 @@ export class UsersComponent implements  OnInit {
     form.resetForm();
   }
 
-  deleteUser(id: number, form: NgForm) {
+  deleteUser(id: number) {
     this.backendService.deleteUser(id)
       .subscribe( () => {
         this.updateUserService.updateUsers();
       });
-    form.resetForm();
   }
 
   onSelect(form: NgForm): void {

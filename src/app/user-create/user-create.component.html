@@ -23,5 +23,7 @@
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 
+
   <button mat-raised-button color="primary" (click)="createUser(createUserForm)" [disabled]="nameModel.invalid || surnameModel.invalid || emailModel.invalid || phoneModel.invalid || dateModel.invalid">Create user</button>
+  <mat-spinner [diameter]="40" *ngIf="userCreated === true"></mat-spinner>
 </form>

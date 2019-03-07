@@ -5,8 +5,10 @@ import { UserCreateComponent } from './user-create.component';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ServiceBackend} from '../services/service.backend/service.backend';
+import {BackendService} from '../services/service.backend/backend.service';
+import {of} from 'rxjs';
 const sinon = require('sinon');
+
 
 const form = <NgForm> {
   value: {
@@ -30,7 +32,10 @@ const newUser = {
   dateOfChanged: new Date().toDateString()
 };
 
-const uiService = { createUser: () => true };
+const stubFunctionCreateUserbackendService = {
+  createUser() { return of( true ); },
+  getUsers() { return of( true ); }
+};
 
 
 describe('UserCreateComponent', () => {
@@ -45,7 +50,10 @@ describe('UserCreateComponent', () => {
         HttpClientModule,
         BrowserAnimationsModule
         ],
-      providers: [{ provide: NgForm, useValue: form}],
+      providers: [
+        { provide: BackendService, useValue: stubFunctionCreateUserbackendService },
+        { provide: NgForm, useValue: form }
+        ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
@@ -57,19 +65,26 @@ describe('UserCreateComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create UserCreateComponent', () => {
     expect(component).toBeTruthy();
   });
 
   it('should create user',  () => {
-    let backendService = TestBed.get(ServiceBackend);
-    let stubFunctionCreateUser = sinon.spy(backendService, 'createUser');
+    let backendService = TestBed.get(BackendService);
+    let stubFunctionCreateUser = sinon.spy(backendService, 'createUser')
+    let stubFunctionGetUsers = sinon.spy(backendService, 'getUsers');
     let stubFunctionResetForm = sinon.spy(form, 'resetForm');
+
     expect(component.createUser(form));
     expect(component.user).toEqual(newUser);
-    expect(stubFunctionCreateUser.called);
+
+    expect(stubFunctionCreateUser.called).toEqual(true);
     expect(stubFunctionCreateUser.callCount).toEqual(1);
-    expect(stubFunctionResetForm.called);
+
+    expect(stubFunctionGetUsers.called).toEqual(true);
+    expect(stubFunctionGetUsers.callCount).toEqual(1);
+
+    expect(stubFunctionResetForm.called).toEqual(true);
     expect(stubFunctionResetForm.callCount).toEqual(1);
   });
 });

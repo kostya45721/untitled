@@ -7,7 +7,6 @@ const client = new elasticsearch.Client({
   log: 'trace'
 });
 const bodyParser = require('body-parser');
-const assert = require('assert');
 
 let users;
 

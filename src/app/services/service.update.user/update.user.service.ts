@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {ServiceBackend} from '../service.backend/service.backend';
+import {BackendService} from '../service.backend/backend.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +7,7 @@ import {ServiceBackend} from '../service.backend/service.backend';
 export class UpdateUserService {
   users: object[];
 
-  constructor(private backendService: ServiceBackend) { }
+  constructor(private backendService: BackendService) { }
 
   updateUsers() {
     this.backendService.getUsers()

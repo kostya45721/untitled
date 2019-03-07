@@ -29,8 +29,8 @@ describe("express and elasticsearch test",function () {
       .send(newUser)
       .then( res => {
         assert.equal(200, res.status);
-        assert.equal('created', res.body.result);
         assert.isNotEmpty(res.body);
+        assert.equal('created', res.body.result);
         userId = res.body._id;
         done();
     })
@@ -40,6 +40,7 @@ describe("express and elasticsearch test",function () {
      request(app)
       .get('/user/' + userId).then(res => {
        assert.equal(200, res.status);
+       assert.isNotEmpty(res.body);
         done();
      });
   });
@@ -50,6 +51,7 @@ describe("express and elasticsearch test",function () {
       .send(changeUser)
       .then( res => {
         assert.equal(200, res.status);
+        assert.isNotEmpty(res.body);
         assert.equal('updated', res.body.result);
         assert.equal(userId, res.body._id);
         done();
@@ -61,6 +63,7 @@ describe("express and elasticsearch test",function () {
       .get('/user/' + userId)
       .then( res => {
         assert.equal(200, res.status);
+        assert.isNotEmpty(res.body);
         let user = res.body._source;
         assert.deepEqual(user, changeUser);
         done();
@@ -72,6 +75,7 @@ describe("express and elasticsearch test",function () {
       .delete('/user/' + userId)
       .then( res => {
         assert.equal(200, res.status);
+        assert.isNotEmpty(res.body);
         assert.equal('deleted', res.body.result);
         done();
       })
