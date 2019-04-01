@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-
+import { environment } from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 
 @Injectable({
@@ -7,26 +7,24 @@ import {HttpClient} from '@angular/common/http';
 })
 export class BackendService {
   express = {
-    localhost: 'localhost',
-    port: '3300'
+    host: environment.backendHost
   };
-
 
   constructor( private http: HttpClient ) { }
 
   deleteUser(id: number) {
-    return this.http.delete('http://' + this.express.localhost + ':' + this.express.port + '/user/' + id, {responseType: 'text'});
+    return this.http.delete(this.express.host + '/user/' + id, {responseType: 'text'});
   }
 
   createUser(user: object) {
-    return this.http.post('http://' + this.express.localhost + ':' + this.express.port + '/user', user, {responseType: 'text'});
+    return this.http.post(this.express.host + '/user', user, {responseType: 'text'});
   }
 
   getUsers() {
-    return this.http.get('http://' + this.express.localhost + ':' + this.express.port + '/users');
+    return this.http.get(this.express.host + '/users');
   }
 
   changeUser(oldId: number, newUser: object) {
-    return this.http.put('http://' + this.express.localhost + ':' + this.express.port + '/user/' + oldId, newUser, {responseType: 'text'});
+    return this.http.put(this.express.host + '/user/' + oldId, newUser, {responseType: 'text'});
   }
 }

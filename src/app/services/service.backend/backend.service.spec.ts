@@ -41,26 +41,28 @@ describe('BackendService', () => {
   });
 
   it('should send http request get', () => {
-    service.getUsers().subscribe();
-    let req = httpClient.expectOne('http://localhost:3300/users', 'request GET');
+    service.getUsers().subscribe(
+
+    );
+    let req = httpClient.expectOne('http://host:3300/users', 'request GET');
     expect(req.request.method).toEqual('GET');
   });
 
   it('should sent http request post', () => {
     service.createUser(newUser).subscribe();
-    let req = httpClient.expectOne('http://localhost:3300/user', 'request POST');
+    let req = httpClient.expectOne('http://host:3300/user', 'request POST');
     expect(req.request.method).toEqual('POST');
   });
 
   it('should send http request put', () => {
     service.changeUser(+'XJYRWGkB6BhEGYp2k84_', changeUser ).subscribe();
-    let req = httpClient.expectOne('http://localhost:3300/user/' + +'XJYRWGkB6BhEGYp2k84_', 'request PUT');
+    let req = httpClient.expectOne('http://host:3300/user/' + +'XJYRWGkB6BhEGYp2k84_', 'request PUT');
     expect(req.request.method).toEqual('PUT');
   });
 
   it('should send http request delete', () => {
     service.deleteUser(+'XJYRWGkB6BhEGYp2k84_' ).subscribe();
-    let req = httpClient.expectOne('http://localhost:3300/user/' + +'XJYRWGkB6BhEGYp2k84_', 'request DELETE');
+    let req = httpClient.expectOne('http://host:3300/user/' + +'XJYRWGkB6BhEGYp2k84_', 'request DELETE');
     expect(req.request.method).toEqual('DELETE');
   });
 });

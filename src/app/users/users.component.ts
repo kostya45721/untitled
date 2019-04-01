@@ -15,7 +15,7 @@ export class UsersComponent implements  OnInit {
   user: object;
 
   constructor( private backendService: BackendService,
-               private updateUserService: UpdateUserService) {
+               public updateUserService: UpdateUserService) {
     this.maxdate = new Date().toISOString().substr(0, 10);
   }
 
